@@ -74,6 +74,9 @@ function cd(args){
 		rasterPrompt();
 		path = '/';
 		newPrompt();
+	} else if (args == '.') {
+		rasterPrompt();
+		newPrompt();
 	} else {
 		println('cd: ' + args + ': No such file or directory');
 	}

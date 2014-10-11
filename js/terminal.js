@@ -11,6 +11,7 @@ var software_files = ["VMware vSphere", "VMware Workstation", "VirtualBox", "LAM
 var technologies_files = ["TCP/IP", "DNS", "DHCP", "WINS", "SMTP", "FTP", "SNMP", "SSH"];
 var iaas_files = ["Amazon Web Services", "DigitalOcean", "Linode"];
 var operating_systems_files = ["CentOS", "RedHat Enterprise Linux", "Debian", "Ubuntu", "Arch", "Server 2003 & R2", "Server 2008 & R2", "Server 2012 & R2", "XP", "Vista", "7", "8", "8.1"];
+var last_command = '';
 
 function println(line){ls
 	rasterPrompt();
@@ -22,6 +23,7 @@ function rasterPrompt(){
 	var currCmd = $('#cmdline').val();
 	$('.input-line').remove();
 	$('#body').append('<div>' + prompt + path + promptSuffix + currCmd + '</div>');
+	last_command = currCmd;
 }
 
 function newPrompt(){
@@ -133,6 +135,12 @@ function autoComplete(){
 	} 
 }
 
+function history(){
+	if(last_command != ''){
+		$('#cmdline').val(last_command);
+	}
+}
+
 document.body.addEventListener('keydown', function(e) {
     if (e.keyCode == 13) { // Enter
     	parser();
@@ -144,6 +152,14 @@ document.body.addEventListener('keydown', function(e) {
 document.body.addEventListener('keydown', function(e) {
     if (e.keyCode == 9) { // Tab
     	autoComplete();
+    	e.stopPropagation();
+    	e.preventDefault();
+    }
+}, false);
+
+document.body.addEventListener('keydown', function(e) {
+    if (e.keyCode == 38) { // Up Arrow
+    	history();
     	e.stopPropagation();
     	e.preventDefault();
     }

@@ -380,6 +380,7 @@ body {
     padding:10px;
     line-height:1.5em;
     overflow-y:scroll;
+    overflow-x:hidden;
 }
 
 @keyframes blink

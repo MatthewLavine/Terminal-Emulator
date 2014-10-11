@@ -12,7 +12,7 @@ var technologies_files = ["TCP/IP", "DNS", "DHCP", "WINS", "SMTP", "FTP", "SNMP"
 var iaas_files = ["Amazon Web Services", "DigitalOcean", "Linode"];
 var operating_systems_files = ["CentOS", "RedHat Enterprise Linux", "Debian", "Ubuntu", "Arch", "Server 2003 & R2", "Server 2008 & R2", "Server 2012 & R2", "XP", "Vista", "7", "8", "8.1"];
 
-var keywords = _files.concat(education_files, work_experience_files, AdvancedGroup, Kittatinny, scripting_files, software_files, technologies_files, iaas_files, operating_systems_files);
+var keywords = _files.concat(education_files, work_experience_files, scripting_files, software_files, technologies_files, iaas_files, operating_systems_files);
 
 function println(line){ls
 	rasterPrompt();

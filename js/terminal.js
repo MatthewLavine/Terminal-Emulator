@@ -67,9 +67,13 @@ function ls(args){
 function cd(args){
 	var arr = eval(path.replace('/','') + '_files');
 	if(arr.indexOf(args) >= 0 ){
-		rasterPrompt();
-		path = '/' + args.replace('/','');
-		newPrompt();
+		if(_files.indexOf(args) >= 0){
+			rasterPrompt();
+			path = '/' + args.replace('/','');
+			newPrompt();
+		} else {
+			println('cd: ' + args + ': Is not a directory')
+		}
 	} else if (args == '..' || args == '' || args == '/' || args == undefined) {
 		rasterPrompt();
 		path = '/';
@@ -78,8 +82,8 @@ function cd(args){
 		rasterPrompt();
 		newPrompt();
 	} else {
-		println('cd: ' + args + ': No such file or directory');
-	}
+		println('cd: ' + args + ': No such file or directory')
+;	}
 }
 
 function cat(args){

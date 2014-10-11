@@ -68,7 +68,7 @@ function cd(args){
 		rasterPrompt();
 		path = '/' + args.replace('/','');
 		newPrompt();
-	} else if (args == '..') {
+	} else if (args == '..' || args == '' || args == '/' || args == undefined) {
 		rasterPrompt();
 		path = '/';
 		newPrompt();
@@ -119,7 +119,7 @@ function parser() {
 }
 
 function autoComplete(){
-	var keyworks = eval(path.replace('/','') + '_files');
+	var keywords = eval(path.replace('/','') + '_files');
 	var currCmd = $('#cmdline').val();
 	var wordList = currCmd.split(' ');
 	var currWord = wordList[wordList.length-1];

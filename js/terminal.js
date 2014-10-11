@@ -181,6 +181,7 @@ $(window).resize(function(){
 
 $(document).ready(function(){
 	refit();
+	$('#lastLoginTime').html(moment().format('ddd MMM D hh:mm:ss'));
 })
 
 $(document).click(function(){

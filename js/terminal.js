@@ -91,8 +91,10 @@ function cat(args){
 		println(AdvancedGroup);
 	} else if(args == 'kittatinny_regional_high_school.txt'){
 		println(Kittatinny);
+	} else if(_files.indexOf(args) >= 0){
+		println('cat: ' + args + ': Is a directory');
 	} else {
-		println('cat: ' + args + ': No such file or directory');
+		println('cat: ' + args + ': Cannot cat file');
 	}
 }
 

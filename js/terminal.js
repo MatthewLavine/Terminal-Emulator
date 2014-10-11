@@ -22,7 +22,7 @@ function println(line){ls
 function rasterPrompt(){
 	var currCmd = $('#cmdline').val();
 	$('.input-line').remove();
-	$('#body').append('<div>' + prompt + path + promptSuffix + currCmd + '</div>');
+	$('#body').append('<div>' + prompt + path + promptSuffix + currCmd + '<div class="timeStamp">' + moment().format('ddd MMM D hh:mm:ss') + '</div></div>');
 	last_command = currCmd;
 }
 
@@ -118,6 +118,10 @@ function parser() {
 		case 'clear':
 			clear();
 			break;
+		case '':
+			rasterPrompt();
+			newPrompt();
+			break;
 		default:
 			println($('#cmdline').val() + ': command not found');
 	}
@@ -177,13 +181,13 @@ function refit(){
 
 $(window).resize(function(){
 	refit();
-})
+});
 
 $(document).ready(function(){
 	refit();
 	$('#lastLoginTime').html(moment().format('ddd MMM D hh:mm:ss'));
-})
+});
 
 $(document).click(function(){
 	$('#cmdline').focus();
-})
+});

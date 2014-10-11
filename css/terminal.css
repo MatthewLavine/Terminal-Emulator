@@ -24,6 +24,11 @@ body {
     clear: both;
 }
 
+.timeStamp {
+    position:absolute;
+    right:100px;
+}
+
 /* FINDER WINDOW */
 
 #window{

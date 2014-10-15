@@ -129,7 +129,7 @@ function parser() {
 			newPrompt();
 			break;
 		default:
-			println($('#cmdline').val() + ': command not found');
+			println(currCmd[0] + ': command not found');
 	}
 }
 

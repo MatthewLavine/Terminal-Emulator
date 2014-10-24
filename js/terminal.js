@@ -53,7 +53,7 @@ function ls(args){
 			if(_files.indexOf(arr[i]) >= 0) {
 				output += 'drwxr-x-r-x 2 user user 4096 Oct 11 7:31 ' + arr[i] + '<br>';
 			} else {
-				output += '-rw-r---r-- 1 user user 1321 Oct 11 7:31 ' + arr[i] + '<br>';
+				output += '-r--r---r-- 1 user user 1321 Oct 11 7:31 ' + arr[i] + '<br>';
 			}
 		} 
 	}	else {

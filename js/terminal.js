@@ -394,7 +394,14 @@ function autoComplete(){
 	var keywords = getSubItems(path);
 	var currCmd = $('#cmdline').val();
 	var wordList = currCmd.split(' ');
-	var currWord = wordList[wordList.length-1];
+	var currWordParts = wordList[wordList.length-1].split("/");
+	var currPath = wordList[wordList.length-1].substr(0,wordList[wordList.length-1].lastIndexOf("/"));
+	var currWord = currWordParts[currWordParts.length-1];
+	if(currPath != "") {
+		if(currPath.substr(0,1) != "/")
+			currPath = "/" + currPath;
+		keywords = getSubItems(currPath);
+	}
 	for (var i=0;i<keywords.length;i++){
 		if(keywords[i].indexOf(currWord) == 0) {
 			currCmd = currCmd.substr(0, currCmd.length - currWord.length);

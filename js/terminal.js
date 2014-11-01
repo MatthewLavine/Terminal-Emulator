@@ -120,25 +120,25 @@ var filesystem = {
 
 function println(line){
 	rasterPrompt();
-	$('#body').append('<div>' + line + '</div>');
+	$('#terminal').append('<div>' + line + '</div>');
 	newPrompt();
 }
 
 function rasterPrompt(){
 	var currCmd = $('#cmdline').val();
 	$('.input-line').remove();
-	$('#body').append('<div>' + prompt + path + promptSuffix + currCmd + '<div class="timeStamp">' + moment().format('ddd MMM D hh:mm:ss') + '</div></div>');
+	$('#terminal').append('<div>' + prompt + path + promptSuffix + currCmd + '<div class="timeStamp">' + moment().format('ddd MMM D hh:mm:ss') + '</div></div>');
 	last_command = currCmd;
 }
 
 function newPrompt(){
-	$('#body').append('<div class="input-line"><div class="prompt">' + prompt + path + promptSuffix + '</div><div><input id="cmdline" class="cmdline" autofocus=""></div></div>');
+	$('#terminal').append('<div class="input-line"><div class="prompt">' + prompt + path + promptSuffix + '</div><div><input id="cmdline" class="cmdline" autofocus=""></div></div>');
 	$('#cmdline').focus();
 	refit();
 }
 
 function clear(){
-	$('#body').empty();
+	$('#terminal').empty();
 	newPrompt();
 }
 
@@ -372,11 +372,10 @@ document.body.addEventListener('keydown', function(e) {
 }, false);
 
 function refit(){
-	$('#cmdline').width($('#body').width()-160);
-	$('#body').height($(window).height()*3/4);
-	var titlePos = $('.top').width() / 2 - $('#title').width();
-	$('#title').css('left', titlePos);
+	$('#cmdline').width($('#terminal').width()-160);
+    $("html, body").scrollTop($(document).height());
 }
+
 
 $(window).resize(function(){
 	refit();

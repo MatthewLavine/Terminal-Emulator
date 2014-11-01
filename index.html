@@ -3,55 +3,19 @@
 <head>
 	<meta charset="utf-8">
 	<title>Interactive Resume</title>
-
 	<link rel="stylesheet" href="css/terminal.css">
-	
 </head>
 <body>
-	<div id="window">
-		<div id="toolbar">
-			<div class="top">
-				<div id="lights">
-					<div class="light red">
-						<div class="glyph">×</div>
-						<div class="shine"></div>
-						<div class="glow"></div>
-					</div>				
-					<div class="light yellow">
-						<div class="glyph">-</div>
-						<div class="shine"></div>
-						<div class="glow"></div>
-					</div>
-					<div class="light green">
-						<div class="glyph">+</div>
-						<div class="shine"></div>
-						<div class="glow"></div>
-					</div>
-				</div>
-				<div id="title">
-					<div class="folder">
-						<div class="tab"></div>
-						<div class="body"></div>
-					</div>
-					<div class="titleText">Interactive Resume</div>
-				</div>
-				<div id="bubble">
-					<div class="shine"></div>
-					<div class="glow"></div>
-				</div>
+	<div id="terminal">
+		<div>Last login: <span id="lastLoginTime"></span> on ttys006</div>
+		<div>Use 'help' for available commands</div>
+		<div class="input-line">
+			<div class="prompt">user@Cloud9:/$&nbsp;</div>
+			<div>
+				<input id="cmdline" class="cmdline" autofocus="">
 			</div>
 		</div>
-		<div id="body">
-			<div>Last login: <span id="lastLoginTime"></span> on ttys006</div>
-			<div>Use 'help' for available commands</div>
-			<div class="input-line">
-				<div class="prompt">user@Cloud9:/$&nbsp;</div>
-				<div>
-					<input id="cmdline" class="cmdline" autofocus="">
-				</div>
-			</div>
-		</div>	
-	</div>
+	</div>	
 	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 	<script src="js/moment.js"></script>
 	<script src="js/terminal.js"></script>

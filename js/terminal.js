@@ -212,12 +212,33 @@ function expandPermissions(path){
 }
 
 function ls(args){
-	var arr = getSubItems(path);
+	var lsPath = path;
+	if((args[1] != undefined && args[1] != "-l") || (args[2] != undefined && args[2] != "-l")){
+		var absPath = ((args[1] != undefined && args[1] != "-l") || (args[2] != undefined && args[2] == "-l")) ? args[1] : args[2];
+		if(absPath.substr(0) != "/") {
+			if(getSubItems(path).indexOf(absPath.split("/")[0]) != -1) {
+				absPath = "/" + absPath;	
+			} else {
+				println('ls: cannot access ' + absPath + ': No such file or directory');
+				return;
+			}
+		}
+		if(absPath.substr(absPath.length-1) == "/")
+			absPath = absPath.substr(0, absPath.length-1);
+		console.log(absPath);
+		if(getSubItems(path).indexOf(absPath) != -1 || (absPath.indexOf("/") == 0 && getType(absPath) == "d")) {
+			lsPath = absPath;
+		} else {
+			println('ls: ' + absPath + ': Is not a directory');
+			return;
+		}
+	}
+	var arr = getSubItems(lsPath);
 	var output = '';
-	if(args == '-l'){
+	if((args[1] != undefined && args[1] == "-l") || (args[2] != undefined && args[2] == "-l")){
 		output = 'total ' + arr.length + '<br>';
 		for (var i=0;i<arr.length;i++){
-			output += getType(path + "/" + arr[i]) + expandPermissions(path + "/" + arr[i]) + ' matt matt 4096 Oct 11 7:31 ' + arr[i] + '<br>';
+			output += getType(lsPath + "/" + arr[i]) + expandPermissions(lsPath + "/" + arr[i]) + ' matt matt 4096 Oct 11 7:31 ' + arr[i] + '<br>';
 		} 
 	}	else {
 		for (var i=0;i<arr.length;i++){
@@ -320,7 +341,7 @@ function parser() {
 		cd(currCmd[1]);
 		break;
 		case 'ls':
-		ls(currCmd[1]);
+		ls(currCmd);
 		break;
 		case 'll':
 		ls("-l");

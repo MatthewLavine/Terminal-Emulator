@@ -167,7 +167,11 @@ function getType(path){
 			evalpath += '["children"]';
 		};
 	});
-	return eval(evalpath);
+	try {
+		return eval(evalpath);	
+	} catch (e) {
+		return undefined;
+	}	
 }
 
 function getContent(file){
@@ -231,6 +235,9 @@ function cd(args){
 		rasterPrompt();
 		path = args;
 		newPrompt();
+		return;
+	} else if(getType(args) == undefined) {
+		println('cd: ' + args + ': No such file or directory');
 		return;
 	}
 	if(arr.indexOf(args) >= 0 ){

@@ -216,9 +216,9 @@ function ls(args){
 			output += getType(path + "/" + arr[i]) + expandPermissions(path + "/" + arr[i]) + ' matt matt 4096 Oct 11 7:31 ' + arr[i] + '<br>';
 		} 
 	}	else {
-			for (var i=0;i<arr.length;i++){
-				output += arr[i] + '<br>';
-			}
+		for (var i=0;i<arr.length;i++){
+			output += arr[i] + '<br>';
+		}
 	}
 	println(output);
 }
@@ -245,99 +245,102 @@ function cd(args){
 		rasterPrompt();
 		newPrompt();
 	} else {
-		println('cd: ' + args + ': No such file or directory')
-		;	}
+		println('cd: ' + args + ': No such file or directory');
 	}
+}
 
-	function cat(args){
-		var arr = getSubItems(path);
-		if(arr.indexOf(args) >= 0 ){
- 			if(getType(path + "/" + args) == "-"){
- 				println(getContent(path + "/" + args));
- 			} else {
- 				println('cat: ' + args + ': Is a directory');
-			}
+function cat(args){
+	var arr = getSubItems(path);
+	if(arr.indexOf(args) >= 0 ){
+		if(getType(path + "/" + args) == "-"){
+			println(getContent(path + "/" + args));
 		} else {
-			println('cat: ' + args + ': Cannot cat file');
+			println('cat: ' + args + ': Is a directory');
 		}
+	} else {
+		println('cat: ' + args + ': Cannot cat file');
 	}
+}
 
-	function shellshock(args){
-		if(args = "env x='() { :;}; echo vulnerable' bash -c \"echo this is a test\")") {
-			println('Why would you do that?');
+function shellshock(args){
+	if(args.indexOf("()") > 0 && args.indexOf("vulnerable") > 0) {
+		println('Why would you do that?');
+	} else {
+		rasterPrompt();
+		newPrompt();
+	}
+}
+
+function whoami(){
+	println('user')
+}
+
+function pwd(){
+	println(path);
+}
+
+function parser() {
+	var currCmd = $('#cmdline').val().split(' ');
+
+	switch(currCmd[0]) {
+		case 'pwd':
+		pwd();
+		break;
+		case 'cd':
+		cd(currCmd[1]);
+		break;
+		case 'ls':
+		ls(currCmd[1]);
+		break;
+		case 'll':
+		ls("-l");
+		break;
+		case 'cat':
+		cat(currCmd[1]);
+		break;
+		case 'help':
+		help();
+		break;
+		case 'clear':
+		clear();
+		break;
+		case 'env':
+		shellshock($('#cmdline').val());
+		break;
+		case 'whoami':
+		whoami();
+		break;
+		case '':
+		rasterPrompt();
+		newPrompt();
+		break;
+		default:
+		println(currCmd[0] + ': command not found');
+	}
+}
+
+function autoComplete(){
+	var keywords = getSubItems(path);
+	var currCmd = $('#cmdline').val();
+	var wordList = currCmd.split(' ');
+	var currWord = wordList[wordList.length-1];
+	for (var i=0;i<keywords.length;i++){
+		if(keywords[i].indexOf(currWord) == 0) {
+			currCmd = currCmd.substr(0, currCmd.length - currWord.length);
+			currCmd += keywords[i];
+			$('#cmdline').val(currCmd);
+			break;
 		}
+	} 
+}
+
+function history(){
+	if(last_command != ''){
+		$('#cmdline').val(last_command);
 	}
+}
 
-	function whoami(){
-			println('user')
-	}
-
-	function pwd(){
-		println(path);
-	}
-
-	function parser() {
-		var currCmd = $('#cmdline').val().split(' ');
-
-		switch(currCmd[0]) {
-			case 'pwd':
-			pwd();
-			break;
-			case 'cd':
-			cd(currCmd[1]);
-			break;
-			case 'ls':
-			ls(currCmd[1]);
-			break;
-			case 'll':
-			ls("-l");
-			break;
-			case 'cat':
-			cat(currCmd[1]);
-			break;
-			case 'help':
-			help();
-			break;
-			case 'clear':
-			clear();
-			break;
-			case 'env':
-			shellshock($('#cmdline').val());
-			break;
-			case 'whoami':
-			whoami();
-			break;
-			case '':
-			rasterPrompt();
-			newPrompt();
-			break;
-			default:
-			println(currCmd[0] + ': command not found');
-		}
-	}
-
-	function autoComplete(){
-		var keywords = getSubItems(path);
-		var currCmd = $('#cmdline').val();
-		var wordList = currCmd.split(' ');
-		var currWord = wordList[wordList.length-1];
-		for (var i=0;i<keywords.length;i++){
-			if(keywords[i].indexOf(currWord) == 0) {
-				currCmd = currCmd.substr(0, currCmd.length - currWord.length);
-				currCmd += keywords[i];
-				$('#cmdline').val(currCmd);
-				break;
-			}
-		} 
-	}
-
-	function history(){
-		if(last_command != ''){
-			$('#cmdline').val(last_command);
-		}
-	}
-
-	document.body.addEventListener('keydown', function(e) {
+document.body.addEventListener('keydown', function(e) {
     if (e.keyCode == 13) { // Enter
     	parser();
     	e.stopPropagation();
@@ -345,7 +348,7 @@ function cd(args){
     }
 }, false);
 
-	document.body.addEventListener('keydown', function(e) {
+document.body.addEventListener('keydown', function(e) {
     if (e.keyCode == 9) { // Tab
     	autoComplete();
     	e.stopPropagation();
@@ -353,7 +356,7 @@ function cd(args){
     }
 }, false);
 
-	document.body.addEventListener('keydown', function(e) {
+document.body.addEventListener('keydown', function(e) {
     if (e.keyCode == 38) { // Up Arrow
     	history();
     	e.stopPropagation();
@@ -361,22 +364,22 @@ function cd(args){
     }
 }, false);
 
-	function refit(){
-		$('#cmdline').width($('#body').width()-160);
-		$('#body').height($(window).height()*3/4);
-		var titlePos = $('.top').width() / 2 - $('#title').width();
-		$('#title').css('left', titlePos);
-	}
+function refit(){
+	$('#cmdline').width($('#body').width()-160);
+	$('#body').height($(window).height()*3/4);
+	var titlePos = $('.top').width() / 2 - $('#title').width();
+	$('#title').css('left', titlePos);
+}
 
-	$(window).resize(function(){
-		refit();
-	});
+$(window).resize(function(){
+	refit();
+});
 
-	$(document).ready(function(){
-		refit();
-		$('#lastLoginTime').html(moment().format('ddd MMM D hh:mm:ss'));
-	});
+$(document).ready(function(){
+	refit();
+	$('#lastLoginTime').html(moment().format('ddd MMM D hh:mm:ss'));
+});
 
-	$(document).click(function(){
-		$('#cmdline').focus();
-	});
+$(document).click(function(){
+	$('#cmdline').focus();
+});

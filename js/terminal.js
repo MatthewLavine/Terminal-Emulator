@@ -1,19 +1,124 @@
 var path = "/";
 var prompt = "user@Cloud9:";
 var promptSuffix = "$&nbsp;";
-var _files = ["education", "work_experience", "scripting", "software", "technologies", "iaas", "operating_systems"];
-var education_files = ["new_jersey_institute_of_technology"];
-var work_experience_files = ["advancedgroup.net.txt", "kittatinny_regional_high_school.txt"];
-var AdvancedGroup = "Kittatinny Regional High School Newton, New Jersey<br>June 2010 - June 2012<br>IT Technician<br>○ Implemented a new thinclient<br>computing lab to increase maintenance efficiency<br>○ Improved school web presence by proposing and implementing a new school website<br>○ Maintained computing systems throughout all wings of the building";
-var Kittatinny = "AdvancedGroup.net Augusta, New Jersey<br>January 2013 - Present<br>Intern Web Developer and System Administrator<br><br>○ Developed specialized content management systems using ColdFusion for clients in the financial and insurance sectors that were required to maintain HIPAA and PCI compliance<br>○ Provided Infrastructure as a Service, IaaS, for 8 clients who wished to cohost in our datacenter<br>○ Maintained 5 dedicated Microsoft SQL servers with failover protection to the US East and West Coast<br>○ Maintained webmail servers for over 75 clients<br>○ Maintained DNS and Domain servers in our internal datacenter<br>○ Oversaw the company network and provided firstresponse to any external network attacks<br>○ Assisted in the beginning of a mass migration of internal systems from our datacenter to Amazon EC2, including 10 servers<br>○ Assembled, maintained, and repaired server hardware part of our internal infrastructure";
-var scripting_files = ["Bash", "Ruby", "Python", "NodeJS"];																				
-var software_files = ["VMware vSphere", "VMware Workstation", "VirtualBox", "LAMP", "MS SQL", "nginx", "Apache", "IIS", "Grunt", "Git", "F-Secure", "Microsoft Security Essentials", "Avast", "AVG"];
-var technologies_files = ["TCP/IP", "DNS", "DHCP", "WINS", "SMTP", "FTP", "SNMP", "SSH"];
-var iaas_files = ["Amazon Web Services", "DigitalOcean", "Linode"];
-var operating_systems_files = ["CentOS", "RedHat Enterprise Linux", "Debian", "Ubuntu", "Arch", "Server 2003 & R2", "Server 2008 & R2", "Server 2012 & R2", "XP", "Vista", "7", "8", "8.1"];
 var last_command = '';
 
-function println(line){ls
+var filesystem = {
+	"About_Me" : {
+		"permissions":"444",
+		"type":"-",
+		"content":"I am a Junior Information Technology Major at the New Jersey Institute of Technology. I am currently employed at AdvancedGroup.net for web development and server maintenance."
+	},
+	"Education" : {
+		"permissions":"755",
+		"type":"d",
+		"children" : {
+			"NJIT":{
+				"permissions":"444",
+				"type":"-",
+				"content":"New Jersey Institute of Technology - Newark, New Jersey<br>May 2016 (Expected)<br>College of Computing Sciences, Bachelor of Science in Information Technology<br>GPA: 3.6"
+			}
+		}
+	},
+	"Work_Experience" : {
+		"permissions":"755",
+		"type":"d",
+		"children" : {
+			"AdvancedGroup.net":{
+				"permissions":"444",
+				"type":"-",
+				"content":"AdvancedGroup.net Augusta, New Jersey<br>January 2013 - Present<br>Intern Web Developer and System Administrator<br><br>○ Developed specialized content management systems using ColdFusion for clients in the financial and insurance sectors that were required to maintain HIPAA and PCI compliance<br>○ Provided Infrastructure as a Service, IaaS, for 8 clients who wished to cohost in our datacenter<br>○ Maintained 5 dedicated Microsoft SQL servers with failover protection to the US East and West Coast<br>○ Maintained webmail servers for over 75 clients<br>○ Maintained DNS and Domain servers in our internal datacenter<br>○ Oversaw the company network and provided firstresponse to any external network attacks<br>○ Assisted in the beginning of a mass migration of internal systems from our datacenter to Amazon EC2, including 10 servers<br>○ Assembled, maintained, and repaired server hardware part of our internal infrastructure"
+			},
+			"Kittatinny_Regional_High_School":{
+				"permissions":"444",
+				"type":"-",
+				"content":"Kittatinny Regional High School Newton, New Jersey<br>June 2010 - June 2012<br>IT Technician<br>○ Implemented a new thin client computing lab to increase maintenance efficiency<br>○ Improved school web presence by proposing and implementing a new school website<br>○ Maintained computing systems throughout all wings of the building"
+			}			
+		}
+
+	},
+	"Technology_Summary" : {
+		"permissions":"755",
+		"type":"d",
+		"children" : {
+			"Scripting":{
+				"permissions":"444",
+				"type":"-",
+				"content":"Bash, Ruby, Python, NodeJS"
+			},
+			"Software":{
+				"permissions":"444",
+				"type":"-",
+				"content":"VMware vSphere, VMware Workstation, VirtualBox, LAMP, MS SQL, nginx, Apache, IIS, Grunt, Git, F-Secure, Microsoft Security Essentials, Avast, AVG"
+			},
+			"Technologies":{
+				"permissions":"444",
+				"type":"-",
+				"content":"TCP/IP, DNS, DHCP, WINS, SMTP, FTP, SNMP, SSH"
+			},
+			"IaaS":{
+				"permissions":"444",
+				"type":"-",
+				"content":"Amazon Web Services, DigitalOcean, Linode"
+			},
+			"Operating_Systems":{
+				"permissions":"444",
+				"type":"-",
+				"content":"CentOS, RedHat Enterprise Linux, Debian, Ubuntu, Arch, Server 2003 & R2, Server 2008 & R2, Server 2012 & R2, XP, Vista, 7, 8, 8.1"
+			}
+		}
+	},
+	"etc":{
+		"permissions":"755",
+		"type":"d",
+		"children":{
+			"hosts":{
+				"permissions":"755",
+				"type":"-",
+				"content":"127.0.0.1 localhost"
+			},
+			"apache2":{
+				"permissions":"755",
+				"type":"-",
+				"content":"127.0.0.1 localhost"
+			}
+		}
+	}, 
+	"var":{
+		"permissions":"755",
+		"type":"d",
+		"children":{
+			"www":{
+				"permissions":"755",
+				"type":"d",
+				"children":{
+					"matthewlavine.net":{
+						"permissions":"755",
+						"type":"-",
+						"content":"sites and stuff"	
+					}
+				}
+			},
+			"log":{
+				"permissions":"755",
+				"type":"-",
+				"content":"i turned on"
+			}
+		}
+	},
+	"srv":{
+		"permissions":"755",
+		"type":"d",
+		"children":{}
+	},
+	"opt":{
+		"permissions":"755",
+		"type":"d",
+		"children":{}
+	}
+}
+
+function println(line){
 	rasterPrompt();
 	$('#body').append('<div>' + line + '</div>');
 	newPrompt();
@@ -38,23 +143,77 @@ function clear(){
 }
 
 function help(){
-	println('Available Commands:<br>ls [-l] [directory]<br>cd [directory]<br>cat [file]<br>clear<br>help');
+	println('Available Commands:<br>ls [-l]<br>cd [directory]<br>cat [file]<br>clear<br>help');
+}
+
+function getSubItems(dir){
+	var evalpath = 'filesystem';
+	dir.replace(/\//gi, " ").substr(1).split(" ").forEach(function(element, index, array) {
+		if(element == "") return;
+		evalpath += '["' + element + '"]';
+		if(eval(evalpath + '["type"]') == "d") evalpath += '["children"]';
+	});
+	return Object.keys(eval(evalpath));
+}
+
+function getType(path){
+	var evalpath = 'filesystem';
+	path.replace(/\//gi, " ").substr(1).split(" ").forEach(function(element, index, array) {
+		if(element == "") return;
+		evalpath += '["' + element + '"]';
+		if (element == array[array.length-1]){
+			evalpath += '["type"]';
+		} else {
+			evalpath += '["children"]';
+		};
+	});
+	return eval(evalpath);
+}
+
+function getContent(file){
+	var evalpath = 'filesystem';
+	file.replace(/\//gi, " ").substr(1).split(" ").forEach(function(element, index, array) {
+		if(element == "") return;
+		evalpath += '["' + element + '"]';
+		if (element == array[array.length-1]){
+			evalpath += '["content"]';
+		} else {
+			evalpath += '["children"]';
+		};
+	});
+	return eval(evalpath);
+}
+
+function expandPermissions(path){
+	var evalpath = 'filesystem';
+	path.replace(/\//gi, " ").substr(1).split(" ").forEach(function(element, index, array) {
+		if(element == "") return;
+		evalpath += '["' + element + '"]';
+		if (element == array[array.length-1]){
+			evalpath += '["permissions"]';
+		} else {
+			evalpath += '["children"]';
+		};
+	});
+	var permRaw = eval(evalpath);
+	var permPretty = "rwxrwxrwx";
+	var permMask = '';
+	for(var i=0;i<permRaw.length;i++){
+		permMask += Number(permRaw[i]).toString(2);
+	}
+	for(var i=0;i<permMask.length;i++){
+		if(permMask[i] == 0) permPretty = permPretty.substr(0, i) + "-" + permPretty.substr(i+1, permPretty.length);
+	}
+	return permPretty;
 }
 
 function ls(args){
-	var arr = eval(path.replace('/','') + '_files');
+	var arr = getSubItems(path);
 	var output = '';
-	if(_files.indexOf(args) >= 0){
-		arr = eval(args + '_files');
-	}
 	if(args == '-l'){
-		output = 'total ' + arr.length*4 + '<br>';
+		output = 'total ' + arr.length + '<br>';
 		for (var i=0;i<arr.length;i++){
-			if(_files.indexOf(arr[i]) >= 0) {
-				output += 'drwxr-x-r-x 2 user user 4096 Oct 11 7:31 ' + arr[i] + '<br>';
-			} else {
-				output += '-r--r---r-- 1 user user 1321 Oct 11 7:31 ' + arr[i] + '<br>';
-			}
+			output += getType(path + "/" + arr[i]) + expandPermissions(path + "/" + arr[i]) + ' user user 4096 Oct 11 7:31 ' + arr[i] + '<br>';
 		} 
 	}	else {
 			for (var i=0;i<arr.length;i++){
@@ -65,9 +224,9 @@ function ls(args){
 }
 
 function cd(args){
-	var arr = eval(path.replace('/','') + '_files');
+	var arr = getSubItems(path);
 	if(arr.indexOf(args) >= 0 ){
-		if(_files.indexOf(args) >= 0){
+		if(getType(path + "/" + args) == "d"){
 			rasterPrompt();
 			path = '/' + args.replace('/','');
 			newPrompt();
@@ -83,78 +242,79 @@ function cd(args){
 		newPrompt();
 	} else {
 		println('cd: ' + args + ': No such file or directory')
-;	}
-}
-
-function cat(args){
-	if(args == 'advancedgroup.net.txt'){
-		println(AdvancedGroup);
-	} else if(args == 'kittatinny_regional_high_school.txt'){
-		println(Kittatinny);
-	} else if(_files.indexOf(args) >= 0){
-		println('cat: ' + args + ': Is a directory');
-	} else {
-		println('cat: ' + args + ': Cannot cat file');
+		;	}
 	}
-}
 
-function pwd(){
-	println(path);
-}
+	function cat(args){
+		var arr = getSubItems(path);
+		if(arr.indexOf(args) >= 0 ){
+ 			if(getType(path + "/" + args) == "-"){
+ 				println(getContent(path + "/" + args));
+ 			} else {
+ 				println('cat: ' + args + ': Is a directory');
+			}
+		} else {
+			println('cat: ' + args + ': Cannot cat file');
+		}
+	}
 
-function parser() {
-	var currCmd = $('#cmdline').val().split(' ');
+	function pwd(){
+		println(path);
+	}
 
-	switch(currCmd[0]) {
-		case 'pwd':
+	function parser() {
+		var currCmd = $('#cmdline').val().split(' ');
+
+		switch(currCmd[0]) {
+			case 'pwd':
 			pwd();
 			break;
-		case 'cd':
+			case 'cd':
 			cd(currCmd[1]);
 			break;
-		case 'ls':
+			case 'ls':
 			ls(currCmd[1]);
 			break;
-		case 'cat':
+			case 'cat':
 			cat(currCmd[1]);
 			break;
-		case 'help':
+			case 'help':
 			help();
 			break;
-		case 'clear':
+			case 'clear':
 			clear();
 			break;
-		case '':
+			case '':
 			rasterPrompt();
 			newPrompt();
 			break;
-		default:
+			default:
 			println(currCmd[0] + ': command not found');
-	}
-}
-
-function autoComplete(){
-	var keywords = eval(path.replace('/','') + '_files');
-	var currCmd = $('#cmdline').val();
-	var wordList = currCmd.split(' ');
-	var currWord = wordList[wordList.length-1];
-	for (var i=0;i<keywords.length;i++){
-		if(keywords[i].indexOf(currWord) >= 0) {
-			currCmd = currCmd.substr(0, currCmd.length - currWord.length);
-			currCmd += keywords[i];
-			$('#cmdline').val(currCmd);
-			break;
 		}
-	} 
-}
-
-function history(){
-	if(last_command != ''){
-		$('#cmdline').val(last_command);
 	}
-}
 
-document.body.addEventListener('keydown', function(e) {
+	function autoComplete(){
+		var keywords = getSubItems(path);
+		var currCmd = $('#cmdline').val();
+		var wordList = currCmd.split(' ');
+		var currWord = wordList[wordList.length-1];
+		for (var i=0;i<keywords.length;i++){
+			if(keywords[i].indexOf(currWord) == 0) {
+				currCmd = currCmd.substr(0, currCmd.length - currWord.length);
+				currCmd += keywords[i];
+				$('#cmdline').val(currCmd);
+				break;
+			}
+		} 
+	}
+
+	function history(){
+		if(last_command != ''){
+			$('#cmdline').val(last_command);
+		}
+	}
+
+	document.body.addEventListener('keydown', function(e) {
     if (e.keyCode == 13) { // Enter
     	parser();
     	e.stopPropagation();
@@ -162,7 +322,7 @@ document.body.addEventListener('keydown', function(e) {
     }
 }, false);
 
-document.body.addEventListener('keydown', function(e) {
+	document.body.addEventListener('keydown', function(e) {
     if (e.keyCode == 9) { // Tab
     	autoComplete();
     	e.stopPropagation();
@@ -170,7 +330,7 @@ document.body.addEventListener('keydown', function(e) {
     }
 }, false);
 
-document.body.addEventListener('keydown', function(e) {
+	document.body.addEventListener('keydown', function(e) {
     if (e.keyCode == 38) { // Up Arrow
     	history();
     	e.stopPropagation();
@@ -178,22 +338,22 @@ document.body.addEventListener('keydown', function(e) {
     }
 }, false);
 
-function refit(){
-	$('#cmdline').width($('#body').width()-160);
-	$('#body').height($(window).height()*3/4);
-	var titlePos = $('.top').width() / 2 - $('#title').width();
-	$('#title').css('left', titlePos);
-}
+	function refit(){
+		$('#cmdline').width($('#body').width()-160);
+		$('#body').height($(window).height()*3/4);
+		var titlePos = $('.top').width() / 2 - $('#title').width();
+		$('#title').css('left', titlePos);
+	}
 
-$(window).resize(function(){
-	refit();
-});
+	$(window).resize(function(){
+		refit();
+	});
 
-$(document).ready(function(){
-	refit();
-	$('#lastLoginTime').html(moment().format('ddd MMM D hh:mm:ss'));
-});
+	$(document).ready(function(){
+		refit();
+		$('#lastLoginTime').html(moment().format('ddd MMM D hh:mm:ss'));
+	});
 
-$(document).click(function(){
-	$('#cmdline').focus();
-});
+	$(document).click(function(){
+		$('#cmdline').focus();
+	});

@@ -225,7 +225,6 @@ function ls(args){
 		}
 		if(absPath.substr(absPath.length-1) == "/")
 			absPath = absPath.substr(0, absPath.length-1);
-		console.log(absPath);
 		if(getSubItems(path).indexOf(absPath) != -1 || (absPath.indexOf("/") == 0 && getType(absPath) == "d")) {
 			lsPath = absPath;
 		} else {
@@ -249,6 +248,7 @@ function ls(args){
 }
 
 function cd(args){
+	var cleanArgs = args;
 	var arr = getSubItems(path);
 	if(args.substr(args.length-1) == "/")
 		args = args.substr(0, args.length-1);
@@ -264,21 +264,26 @@ function cd(args){
 		rasterPrompt();
 		newPrompt();
 	} else if(args.substr(0,1) == "/" || getSubItems(path).indexOf(args.split("/")[0]) != -1 ){
-		if(args.substr(0,1) != "/")
-			args = "/" + args;
+		if(args.substr(0,1) != "/") {
+			if(path == "/"){
+				args = path + args;
+			} else {
+				args = path + "/" + args;
+			}
+		}
 		if(getType(args) == "d") {
 			rasterPrompt();
 			path = args;
 			newPrompt();
 			return;
 		} else if(getType(args) == undefined) {
-			println('cd: ' + args + ': No such file or directory');
+			println('cd: ' + cleanArgs + ': No such file or directory');
 			return;
 		} else {
-			println('cd: ' + args + ': Is not a directory')
+			println('cd: ' + cleanArgs + ': Is not a directory')
 		}
 	} else {
-		println('cd: ' + args + ': No such file or directory');
+		println('cd: ' + cleanArgs + ': No such file or directory');
 	}
 }
 
@@ -290,8 +295,20 @@ function cat(args){
 		} else {
 			println('cat: ' + args + ': Is a directory');
 		}
+	} else if(args.indexOf("/") == 0) {
+		if(getType(args) == "-"){
+			println(getContent(path + "/" + args));
+		} else {
+			println('cat: ' + args + ': Is a directory');
+		}
+	} else if(args.indexOf("/") != -1) { 
+		if(getType("/" + args) == "-"){
+			println(getContent(path + "/" + args));
+		} else {
+			println('cat: ' + args + ': Is a directory');
+		}
 	} else {
-		println('cat: ' + args + ': Cannot cat file');
+		println('cat: ' + args + ': No such file or directory');
 	}
 }
 
@@ -348,6 +365,9 @@ function parser() {
 		break;
 		case 'clear':
 		clear();
+		break;
+		case 'date':
+		println(moment().format('ddd MMM D hh:mm:ss'));
 		break;
 		case 'env':
 		shellshock($('#cmdline').val());

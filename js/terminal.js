@@ -34,7 +34,7 @@ function clear(){
 }
 
 function help(){
-	println('Available Commands:<br>ls [-l]<br>cd [directory]<br>cat [file]<br>history<br>clear<br>help');
+	println('Available Commands:<br>ls [-l] [directory]<br>cd [directory]<br>cat [file]<br>history<br>clear<br>help');
 }
 
 function getSubItems(dir){

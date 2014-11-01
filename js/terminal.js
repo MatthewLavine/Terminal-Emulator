@@ -279,6 +279,10 @@ function pwd(){
 	println(path);
 }
 
+function alias(){
+	println("ll=\"ls -l\"");
+}
+
 function parser() {
 	var currCmd = $('#cmdline').val().split(' ');
 
@@ -309,6 +313,9 @@ function parser() {
 		break;
 		case 'whoami':
 		whoami();
+		break;
+		case 'alias':
+		alias();
 		break;
 		case '':
 		rasterPrompt();

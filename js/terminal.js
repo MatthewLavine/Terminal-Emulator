@@ -129,8 +129,6 @@ function rasterPrompt(){
 	var currCmd = $('#cmdline').val();
 	$('.input-line').remove();
 	$('#terminal').append('<div>' + prompt + path + promptSuffix + currCmd + '<div class="timeStamp">' + moment().format('ddd MMM D hh:mm:ss') + '</div></div>');
-	hist.push(String(currCmd));
-	histPtr = hist.length;
 }
 
 function newPrompt(){
@@ -370,8 +368,15 @@ function histDown(){
 	$('#cmdline').val(hist[histPtr]);
 }
 
+function logHist(){
+	var currCmd = $('#cmdline').val();
+	hist.push(String(currCmd));
+	histPtr = hist.length;	
+}
+
 document.body.addEventListener('keydown', function(e) {
     if (e.keyCode == 13) { // Enter
+    	logHist();
     	parser();
     	e.stopPropagation();
     	e.preventDefault();

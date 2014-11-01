@@ -224,7 +224,15 @@ function ls(args){
 }
 
 function cd(args){
+	if(args.substr(args.length-1) == "/")
+		args = args.substr(0, args.length-1);
 	var arr = getSubItems(path);
+	if(args.substr(0,1) == "/" && getType(args) == "d") {
+		rasterPrompt();
+		path = args;
+		newPrompt();
+		return;
+	}
 	if(arr.indexOf(args) >= 0 ){
 		if(getType(path + "/" + args) == "d"){
 			rasterPrompt();

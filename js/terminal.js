@@ -233,7 +233,11 @@ function cd(args){
 		} else {
 			println('cd: ' + args + ': Is not a directory')
 		}
-	} else if (args == '..' || args == '' || args == '/' || args == undefined) {
+	} else if (args == '..' && path != "/" && path.lastIndexOf("/") != 0){
+		rasterPrompt();
+		path = path.substr(0, path.lastIndexOf("/"));
+		newPrompt();
+	} else if ((args == '..' && (path == "/" || path.lastIndexOf("/") == 0)) || args == '' || args == '/' || args == undefined) {
 		rasterPrompt();
 		path = '/';
 		newPrompt();

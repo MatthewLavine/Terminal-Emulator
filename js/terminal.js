@@ -5,7 +5,7 @@ var last_command = '';
 
 var filesystem = {
 	"About_Me" : {
-		"permissions":"444",
+		"permissions":"664",
 		"type":"-",
 		"content":"I am a Junior Information Technology Major at the New Jersey Institute of Technology. I am currently employed at AdvancedGroup.net for web development and server maintenance."
 	},
@@ -14,7 +14,7 @@ var filesystem = {
 		"type":"d",
 		"children" : {
 			"NJIT":{
-				"permissions":"444",
+				"permissions":"664",
 				"type":"-",
 				"content":"New Jersey Institute of Technology - Newark, New Jersey<br>May 2016 (Expected)<br>College of Computing Sciences, Bachelor of Science in Information Technology<br>GPA: 3.6"
 			}
@@ -25,12 +25,12 @@ var filesystem = {
 		"type":"d",
 		"children" : {
 			"AdvancedGroup.net":{
-				"permissions":"444",
+				"permissions":"664",
 				"type":"-",
 				"content":"AdvancedGroup.net Augusta, New Jersey<br>January 2013 - Present<br>Intern Web Developer and System Administrator<br><br>○ Developed specialized content management systems using ColdFusion for clients in the financial and insurance sectors that were required to maintain HIPAA and PCI compliance<br>○ Provided Infrastructure as a Service, IaaS, for 8 clients who wished to cohost in our datacenter<br>○ Maintained 5 dedicated Microsoft SQL servers with failover protection to the US East and West Coast<br>○ Maintained webmail servers for over 75 clients<br>○ Maintained DNS and Domain servers in our internal datacenter<br>○ Oversaw the company network and provided firstresponse to any external network attacks<br>○ Assisted in the beginning of a mass migration of internal systems from our datacenter to Amazon EC2, including 10 servers<br>○ Assembled, maintained, and repaired server hardware part of our internal infrastructure"
 			},
 			"Kittatinny_Regional_High_School":{
-				"permissions":"444",
+				"permissions":"664",
 				"type":"-",
 				"content":"Kittatinny Regional High School Newton, New Jersey<br>June 2010 - June 2012<br>IT Technician<br>○ Implemented a new thin client computing lab to increase maintenance efficiency<br>○ Improved school web presence by proposing and implementing a new school website<br>○ Maintained computing systems throughout all wings of the building"
 			}			
@@ -42,27 +42,27 @@ var filesystem = {
 		"type":"d",
 		"children" : {
 			"Scripting":{
-				"permissions":"444",
+				"permissions":"664",
 				"type":"-",
 				"content":"Bash, Ruby, Python, NodeJS"
 			},
 			"Software":{
-				"permissions":"444",
+				"permissions":"664",
 				"type":"-",
 				"content":"VMware vSphere, VMware Workstation, VirtualBox, LAMP, MS SQL, nginx, Apache, IIS, Grunt, Git, F-Secure, Microsoft Security Essentials, Avast, AVG"
 			},
 			"Technologies":{
-				"permissions":"444",
+				"permissions":"664",
 				"type":"-",
 				"content":"TCP/IP, DNS, DHCP, WINS, SMTP, FTP, SNMP, SSH"
 			},
 			"IaaS":{
-				"permissions":"444",
+				"permissions":"664",
 				"type":"-",
 				"content":"Amazon Web Services, DigitalOcean, Linode"
 			},
 			"Operating_Systems":{
-				"permissions":"444",
+				"permissions":"664",
 				"type":"-",
 				"content":"CentOS, RedHat Enterprise Linux, Debian, Ubuntu, Arch, Server 2003 & R2, Server 2008 & R2, Server 2012 & R2, XP, Vista, 7, 8, 8.1"
 			}
@@ -213,7 +213,7 @@ function ls(args){
 	if(args == '-l'){
 		output = 'total ' + arr.length + '<br>';
 		for (var i=0;i<arr.length;i++){
-			output += getType(path + "/" + arr[i]) + expandPermissions(path + "/" + arr[i]) + ' user user 4096 Oct 11 7:31 ' + arr[i] + '<br>';
+			output += getType(path + "/" + arr[i]) + expandPermissions(path + "/" + arr[i]) + ' matt matt 4096 Oct 11 7:31 ' + arr[i] + '<br>';
 		} 
 	}	else {
 			for (var i=0;i<arr.length;i++){
@@ -262,6 +262,16 @@ function cd(args){
 		}
 	}
 
+	function shellshock(args){
+		if(args = "env x='() { :;}; echo vulnerable' bash -c \"echo this is a test\")") {
+			println('Why would you do that?');
+		}
+	}
+
+	function whoami(){
+			println('user')
+	}
+
 	function pwd(){
 		println(path);
 	}
@@ -279,6 +289,9 @@ function cd(args){
 			case 'ls':
 			ls(currCmd[1]);
 			break;
+			case 'll':
+			ls("-l");
+			break;
 			case 'cat':
 			cat(currCmd[1]);
 			break;
@@ -287,6 +300,12 @@ function cd(args){
 			break;
 			case 'clear':
 			clear();
+			break;
+			case 'env':
+			shellshock($('#cmdline').val());
+			break;
+			case 'whoami':
+			whoami();
 			break;
 			case '':
 			rasterPrompt();

@@ -4,6 +4,7 @@ var promptSuffix = "$&nbsp;";
 var hist = [];
 var histPtr = 0;
 var filesystem = {};
+var commands = ["pwd", "cd", "ls", "ll", "cat", "help", "clear", "date", "whoami", "alias", "history"];
 
 $.getJSON("./js/filesystem.json", function(data){
 	filesystem = data;
@@ -296,6 +297,14 @@ function autoComplete(){
 		if(keywords[i].indexOf(currWord) == 0) {
 			currCmd = currCmd.substr(0, currCmd.length - currWord.length);
 			currCmd += keywords[i];
+			$('#cmdline').val(currCmd);
+			break;
+		}
+	} 
+	for (var i=0;i<commands.length;i++){
+		if(commands[i].indexOf(currWord) == 0) {
+			currCmd = currCmd.substr(0, currCmd.length - currWord.length);
+			currCmd += commands[i];
 			$('#cmdline').val(currCmd);
 			break;
 		}

@@ -249,30 +249,10 @@ function ls(args){
 }
 
 function cd(args){
+	var arr = getSubItems(path);
 	if(args.substr(args.length-1) == "/")
 		args = args.substr(0, args.length-1);
-	var arr = getSubItems(path);
-	if(args.substr(0,1) == "/" && getType(args) == "d") {
-		rasterPrompt();
-		path = args;
-		newPrompt();
-		return;
-	} else if(getType(args) == undefined) {
-		println('cd: ' + args + ': No such file or directory');
-		return;
-	}
-	if(arr.indexOf(args) >= 0 ){
-		if(getType(path + "/" + args) == "d"){
-			rasterPrompt();
-			var temp_path = path;
-			if(path == "/")
-				temp_path = "";
-			path = temp_path + "/" + args.replace('/','');
-			newPrompt();
-		} else {
-			println('cd: ' + args + ': Is not a directory')
-		}
-	} else if (args == '..' && path != "/" && path.lastIndexOf("/") != 0){
+	if (args == '..' && path != "/" && path.lastIndexOf("/") != 0){
 		rasterPrompt();
 		path = path.substr(0, path.lastIndexOf("/"));
 		newPrompt();
@@ -283,6 +263,20 @@ function cd(args){
 	} else if (args == '.') {
 		rasterPrompt();
 		newPrompt();
+	} else if(args.substr(0,1) == "/" || getSubItems(path).indexOf(args.split("/")[0]) != -1 ){
+		if(args.substr(0,1) != "/")
+			args = "/" + args;
+		if(getType(args) == "d") {
+			rasterPrompt();
+			path = args;
+			newPrompt();
+			return;
+		} else if(getType(args) == undefined) {
+			println('cd: ' + args + ': No such file or directory');
+			return;
+		} else {
+			println('cd: ' + args + ': Is not a directory')
+		}
 	} else {
 		println('cd: ' + args + ': No such file or directory');
 	}
@@ -344,7 +338,7 @@ function parser() {
 		ls(currCmd);
 		break;
 		case 'll':
-		ls("-l");
+		ls(["ls", "-l"]);
 		break;
 		case 'cat':
 		cat(currCmd[1]);
@@ -448,7 +442,7 @@ document.body.addEventListener('keydown', function(e) {
 
 function refit(){
 	$('#cmdline').width($('#terminal').width()-160);
-    $("html, body").scrollTop($(document).height());
+	$("html, body").scrollTop($(document).height());
 }
 
 

@@ -215,7 +215,7 @@ function ls(args){
 	var lsPath = path;
 	if((args[1] != undefined && args[1] != "-l") || (args[2] != undefined && args[2] != "-l")){
 		var absPath = ((args[1] != undefined && args[1] != "-l") || (args[2] != undefined && args[2] == "-l")) ? args[1] : args[2];
-		if(absPath.substr(0) != "/") {
+		if(absPath.substr(0,1) != "/") {
 			if(getSubItems(path).indexOf(absPath.split("/")[0]) != -1) {
 				absPath = "/" + absPath;	
 			} else {

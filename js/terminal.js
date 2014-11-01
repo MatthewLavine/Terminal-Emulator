@@ -1,7 +1,8 @@
 var path = "/";
 var prompt = "user@Cloud9:";
 var promptSuffix = "$&nbsp;";
-var last_command = '';
+var hist = [];
+var histPtr = 0;
 
 var filesystem = {
 	"About_Me" : {
@@ -128,7 +129,8 @@ function rasterPrompt(){
 	var currCmd = $('#cmdline').val();
 	$('.input-line').remove();
 	$('#terminal').append('<div>' + prompt + path + promptSuffix + currCmd + '<div class="timeStamp">' + moment().format('ddd MMM D hh:mm:ss') + '</div></div>');
-	last_command = currCmd;
+	hist.push(String(currCmd));
+	histPtr = hist.length;
 }
 
 function newPrompt(){
@@ -143,7 +145,7 @@ function clear(){
 }
 
 function help(){
-	println('Available Commands:<br>ls [-l]<br>cd [directory]<br>cat [file]<br>clear<br>help');
+	println('Available Commands:<br>ls [-l]<br>cd [directory]<br>cat [file]<br>history<br>clear<br>help');
 }
 
 function getSubItems(dir){
@@ -283,6 +285,14 @@ function alias(){
 	println("ll=\"ls -l\"");
 }
 
+function history(){
+	var output = "";
+	for(var i=0;i<hist.length;i++){
+		output += i + "&nbsp;&nbsp;" + hist[i] + "<br>";
+	}
+	println(output);
+}
+
 function parser() {
 	var currCmd = $('#cmdline').val().split(' ');
 
@@ -317,6 +327,9 @@ function parser() {
 		case 'alias':
 		alias();
 		break;
+		case 'history':
+		history();
+		break;
 		case '':
 		rasterPrompt();
 		newPrompt();
@@ -341,10 +354,20 @@ function autoComplete(){
 	} 
 }
 
-function history(){
-	if(last_command != ''){
-		$('#cmdline').val(last_command);
-	}
+function histUp(){
+	if(hist.length == 0)
+		return;
+	if(histPtr - 1 >= 0)
+		histPtr--;
+	$('#cmdline').val(hist[histPtr]);
+}
+
+function histDown(){
+	if(hist.length == 0)
+		return;
+	if(histPtr + 1 <= hist.length)
+		histPtr++;
+	$('#cmdline').val(hist[histPtr]);
 }
 
 document.body.addEventListener('keydown', function(e) {
@@ -365,7 +388,15 @@ document.body.addEventListener('keydown', function(e) {
 
 document.body.addEventListener('keydown', function(e) {
     if (e.keyCode == 38) { // Up Arrow
-    	history();
+    	histUp();
+    	e.stopPropagation();
+    	e.preventDefault();
+    }
+}, false);
+
+document.body.addEventListener('keydown', function(e) {
+    if (e.keyCode == 40) { // Down Arrow
+    	histDown();
     	e.stopPropagation();
     	e.preventDefault();
     }

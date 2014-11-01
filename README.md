@@ -7,3 +7,5 @@ Currently it contains:
 - Basic Unix commands
 - A custom filesystem datatype 
 - Completely dynamic navigation
+- Unlimited command history support
+- Tab autocompletions

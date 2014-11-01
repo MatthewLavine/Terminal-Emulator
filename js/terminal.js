@@ -228,7 +228,10 @@ function cd(args){
 	if(arr.indexOf(args) >= 0 ){
 		if(getType(path + "/" + args) == "d"){
 			rasterPrompt();
-			path = '/' + args.replace('/','');
+			var temp_path = path;
+			if(path == "/")
+				temp_path = "";
+			path = temp_path + "/" + args.replace('/','');
 			newPrompt();
 		} else {
 			println('cd: ' + args + ': Is not a directory')

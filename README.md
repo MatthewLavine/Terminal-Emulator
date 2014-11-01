@@ -1,7 +1,7 @@
 Terminal-Emulator
 =================
 
-This is a basc Unix terminal emulator written in Javascript.
+This is a basic Unix terminal emulator written in Javascript.
 
 Currently it contains:
 - Basic Unix commands

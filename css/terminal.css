@@ -2,6 +2,7 @@ body {
     background:#000;
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     line-height: 1.5em;
+    overflow-y:hidden
 }
 
 .cmdline {

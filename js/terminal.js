@@ -298,7 +298,7 @@ function autoComplete(){
 			currCmd = currCmd.substr(0, currCmd.length - currWord.length);
 			currCmd += keywords[i];
 			$('#cmdline').val(currCmd);
-			break;
+			return;
 		}
 	} 
 	for (var i=0;i<commands.length;i++){
@@ -306,7 +306,7 @@ function autoComplete(){
 			currCmd = currCmd.substr(0, currCmd.length - currWord.length);
 			currCmd += commands[i];
 			$('#cmdline').val(currCmd);
-			break;
+			return;
 		}
 	} 
 }
